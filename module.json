@@ -5,7 +5,7 @@
    "author": "HappySteve",
    "version": "0.0.1",
    "minimumCoreVersion": "0.6.0",
-   "compatibleCoreVersion":"0.6.5",
+   "compatibleCoreVersion":"0.8.9",
    "styles" : [],
    "scripts" : ["terminal.js"],
    "packs": [],
