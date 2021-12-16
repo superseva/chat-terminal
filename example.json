@@ -5,18 +5,17 @@
 	"attempts": 3,
 	"content": "Welcome to ROBCO Industries (TM) Termlink\nClearance: Test Terminal",
 	"screens": [{
-		"name": "Screen 1 Title",
+		"name": "SCREEN 1 TITLE",
 		"content": "This is screen 1 content",
 		"screens": [{
-			"name": "Screen 1.1 Subtitle",
-			"content": "This is screen 1.1 content, subsection of scren 1"
+			"name": "SCREEN 1.1 SUBTITLE",
+			"content": "This is screen 1.1 content, subsection of screen 1"
 		}]
 	}, {
-		"name": "Scren 2 Title",
+		"name": "SCREN 2 TITLE",
 		"content": "This is screen 2 content"
 	}, {
-		"name": "Screen 3 Title",
+		"name": "SCREEN 3 TITLE",
 		"content": "This is screen 3 content"
 	}]
-
 }
