@@ -1,3 +1,6 @@
+/* CREDITS GO TO THE GUY WHO CRETED THIS THING FOR ROLL20 IN THE FIRST PLACE */
+/* This is a modified version optimized to work with the FoundyVtt system by HappySteve */
+
 class ChatTerminal {
 
     static MODULE_NAME = "module.chat-terminal";
@@ -301,8 +304,8 @@ class ChatTerminal {
     }
 
     _onTerminalButtonScreen($el) {
-        $($el.data._html).find(".terminal-chat-button").off();
-        $($el.data._html).find(".terminal-back-button").off();
+        //$($el.data._html).find(".terminal-chat-button").off();
+        // $($el.data._html).find(".terminal-back-button").off();
         const id = $el.currentTarget.dataset.screenid;
         //this.history.push(this.curScreenId);
         //this._displayScreen(id);
@@ -317,8 +320,8 @@ class ChatTerminal {
         }
     }
     _onTerminalButtonBack($el) {
-        $($el.data._html).find(".terminal-chat-button").off();
-        $($el.data._html).find(".terminal-back-button").off();
+        //$($el.data._html).find(".terminal-chat-button").off();
+        //$($el.data._html).find(".terminal-back-button").off();
 
         if (game.user.isGM) {
             this.handleGoBack();
