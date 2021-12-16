@@ -1,5 +1,6 @@
 class ChatTerminal {
 
+    static MODULE_NAME = "module.chat-terminal";
     // OPERATIONS:
     static TRY_PASSWORD = "tryPassword";
     static SHOW_SCREN = "showScreen";
@@ -12,6 +13,12 @@ class ChatTerminal {
     static PASSWORD_CMD = '!pass';
     static PREV_SCREEN_CMD = '!_prev_screen';
     static SHOW_SCREEN_CMD = '!_show_screen';
+
+    //UTILS
+    static ASCII_TABLE = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`{|}~';
+    static DEFAULT_BG_COLOR = '#000';
+    static DEFAULT_BUTTON_COLOR = '#114422';
+    static DEFAULT_TEXT_COLOR = '#22ff88';
 
 
     constructor() {
@@ -26,9 +33,28 @@ class ChatTerminal {
     }
 
     // HAVNDLE SOCKET CALLS
-    handleTryPassword(data) { }
-    handleShowScreen(data) { }
-    handleGoBack(data) { }
+    handleTryPassword(data) {
+        console.warn(data)
+        const args = data.content.split(' ');
+        const password = args.slice(1).join(' ');
+        //this._guessPassword(password);
+
+        if (password === this.curTerminal._password)
+            this.curTerminal._locked = false;
+        else
+            this.curTerminal._attempts--;
+
+        this._displayScreen(this.curTerminal._startId);
+    }
+
+    handleShowScreen(data) {
+        this._displayScreen(data.id);
+    }
+
+    handleGoBack(data) {
+        const id = this.history.pop();
+        this._displayScreen(id);
+    }
 
     /**
    * Activates a terminal by initializing its JSON and displaying the
@@ -124,6 +150,7 @@ class ChatTerminal {
      */
     _displayScreen(id) {
         const screen = this.curTerminal[id];
+        this.history.push(this.curScreenId);
         this.curScreenId = id;
 
         var html = '<table style="background-color: ' + this._getBgColor() + '; border: solid 1px ' + this._getBgColor() + '; border-collapse: separate; border-radius: 10px; font-family: monospace; overflow: hidden; width: 100%;">';
@@ -143,7 +170,6 @@ class ChatTerminal {
         }
 
         html += '</td></tr></tbody></table>';
-        console.log(html)
         this._sendChat('Fallout Terminal', html);
 
     }
@@ -177,7 +203,7 @@ class ChatTerminal {
                 var id = screen.screenIds[i];
                 var _screen = this.curTerminal[id];
                 if (_screen) {
-                    html += this._displayScreenButton(FalloutTerminal.SHOW_SCREEN_CMD + ' ' + id, _screen.name, id);
+                    html += this._displayScreenButton(ChatTerminal.SHOW_SCREEN_CMD + ' ' + id, _screen.name, id);
                 }
             }
         }
@@ -235,7 +261,7 @@ class ChatTerminal {
                 var addr = startAddr + inc * i;
                 html += '0x' + addr.toString(16).toUpperCase() + ' ';
                 for (var i = 0; i < inc; i++) {
-                    html += FalloutTerminal.ASCII_TABLE[Math.floor(Math.random() * FalloutTerminal.ASCII_TABLE.length)].replace('<', '&lt;').replace('>', '&gt;');
+                    html += ChatTerminal.ASCII_TABLE[Math.floor(Math.random() * ChatTerminal.ASCII_TABLE.length)].replace('<', '&lt;').replace('>', '&gt;');
                 }
             }
             html += '\n\n';
@@ -277,35 +303,51 @@ class ChatTerminal {
     _onTerminalButtonScreen($el) {
         $($el.data._html).find(".terminal-chat-button").off();
         $($el.data._html).find(".terminal-back-button").off();
-        var id = $el.currentTarget.dataset.screenid;
-        this.history.push(this.curScreenId);
-        this._displayScreen(id);
+        const id = $el.currentTarget.dataset.screenid;
+        //this.history.push(this.curScreenId);
+        //this._displayScreen(id);
+        if (game.user.isGM) {
+            this.handleShowScreen({ id: id });
+
+        } else {
+            game.socket.emit(ChatTerminal.MODULE_NAME, {
+                operation: ChatTerminal.SHOW_SCREN,
+                id: id
+            })
+        }
     }
     _onTerminalButtonBack($el) {
         $($el.data._html).find(".terminal-chat-button").off();
         $($el.data._html).find(".terminal-back-button").off();
-        var id = this.history.pop();
-        this._displayScreen(id);
+
+        if (game.user.isGM) {
+            this.handleGoBack();
+            //this._displayScreen(id);
+        } else {
+            game.socket.emit(ChatTerminal.MODULE_NAME, {
+                operation: ChatTerminal.BACK,
+            })
+        }
     }
 
     _checkChatMessage(msg, html, data) {
         $(html).find(".terminal-chat-button").click({ _html: html }, this._onTerminalButtonScreen.bind(this));
         $(html).find(".terminal-back-button").click({ _html: html }, this._onTerminalButtonBack.bind(this));
         //try {
-        // if(msg.content === FalloutTerminal.ACTIVATE_TERMINAL_CMD && msg.selected) {
+        // if(msg.content === ChatTerminal.ACTIVATE_TERMINAL_CMD && msg.selected) {
         //   this._activateTerminal(msg.selected[0]._id);
         // }
-        // if(msg.content.indexOf(FalloutTerminal.SHOW_SCREEN_CMD) === 0) {
+        // if(msg.content.indexOf(ChatTerminal.SHOW_SCREEN_CMD) === 0) {
         //   var args = msg.content.split(' ');
         //   var id = args[1];
         //   this.history.push(this.curScreenId);
         //   this._displayScreen(args[1]);
         // }
-        // if(msg.content.indexOf(FalloutTerminal.PREV_SCREEN_CMD) === 0) {
+        // if(msg.content.indexOf(ChatTerminal.PREV_SCREEN_CMD) === 0) {
         //   var id = this.history.pop();
         //   this._displayScreen(id);
         // }
-        // if(msg.content.indexOf(FalloutTerminal.PASSWORD_CMD) === 0) {
+        // if(msg.content.indexOf(ChatTerminal.PASSWORD_CMD) === 0) {
         //   var args = msg.content.split(' ');
         //   var password = args.slice(1).join(' ');
         //   this._guessPassword(password);
@@ -319,41 +361,54 @@ class ChatTerminal {
 
     // HELPERS
     _getButtonColor() {
-        return FalloutTerminal.DEFAULT_BUTTON_COLOR;
+        return ChatTerminal.DEFAULT_BUTTON_COLOR;
     }
     _getTextColor() {
-        return FalloutTerminal.DEFAULT_TEXT_COLOR;
+        return ChatTerminal.DEFAULT_TEXT_COLOR;
     }
     _getBgColor() {
-        return FalloutTerminal.DEFAULT_BG_COLOR;
+        return ChatTerminal.DEFAULT_BG_COLOR;
     }
 
 
 }
 
 Hooks.once("ready", () => {
+    console.warn('INIT TERMINAL')
     if (ChatTerminal._instance) return;
     const falloutTerminal = new ChatTerminal();
-    game.socket.on(`module.chat-termianl`, (data) => {
-        if (data.operation === ChatTerminal.TRY_PASSWORD) ChatTerminal._instance.handleTryPassword(data);
-        if (data.operation === ChatTerminal.SHOW_SCREN) ChatTerminal._instance.handleShowScreen(data);
-        if (data.operation === ChatTerminal.BACK) ChatTerminal._instance.handleGoBack(data);
-    });
+    game.falloutTerminal = falloutTerminal;
+    if (game.user.isGM) {
+        console.warn('ADD SOCKET LISTENERS FOR GM')
+        game.socket.on(`module.chat-terminal`, (data) => {
+            console.warn(data)
+            if (data.operation === ChatTerminal.TRY_PASSWORD) ChatTerminal._instance.handleTryPassword(data);
+            if (data.operation === ChatTerminal.SHOW_SCREN) ChatTerminal._instance.handleShowScreen(data);
+            if (data.operation === ChatTerminal.BACK) ChatTerminal._instance.handleGoBack(data);
+        });
+    }
 
     Hooks.on('renderChatMessage', (message, html, data) => {
-        console.warn(message)
         falloutTerminal._checkChatMessage(message.data, html, data);
     });
 
+    // CHECK PASSWORD IN PRE CREATE
+    // Send through the socket if user is player.
     Hooks.on('preCreateChatMessage', (msg, content) => {
-        console.warn(msg)
-        if (msg.data.content.indexOf(FalloutTerminal.PASSWORD_CMD) === 0 && falloutTerminal.curTerminal._attempts > 0) {
-            var args = msg.data.content.split(' ');
-            var password = args.slice(1).join(' ');
-            falloutTerminal._guessPassword(password);
+        console.warn(msg.data.content.indexOf(ChatTerminal.PASSWORD_CMD) === 0)
+        if (msg.data.content.indexOf(ChatTerminal.PASSWORD_CMD) === 0) {
+            const _data = {
+                operation: ChatTerminal.TRY_PASSWORD,
+                user: game.user.id,
+                content: msg.data.content
+            }
+            if (!game.user.isGM) {
+                game.socket.emit(ChatTerminal.MODULE_NAME, _data);
+            } else {
+                ChatTerminal._instance.handleTryPassword(_data);
+            }
+            // dont print actual chat message (return false)
             return false;
-        } else {
-            console.warn("SKIP")
         }
     });
 });
