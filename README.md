@@ -3,7 +3,7 @@
 Inspired By Roll20 Fallout Terminal by Cazra
 https://github.com/Cazra/roll20-api-scripts
 
-Create a JSON file and paste the content in to the HTML section of a Journal
+Copy JSON file content and paste it in to the HTML section of a Journal
 (the <> button in the Journal edit toolbar)
 
 Simple example of JSON: https://raw.githubusercontent.com/superseva/chat-terminal/master/example.json
