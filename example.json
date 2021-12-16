@@ -1,0 +1,22 @@
+{
+	"name": "Test Terminal",
+	"locked": true,
+	"password": "fo",
+	"attempts": 3,
+	"content": "Welcome to ROBCO Industries (TM) Termlink\nClearance: Test Terminal",
+	"screens": [{
+		"name": "Screen 1 Title",
+		"content": "This is screen 1 content",
+		"screens": [{
+			"name": "Screen 1.1 Subtitle",
+			"content": "This is screen 1.1 content, subsection of scren 1"
+		}]
+	}, {
+		"name": "Scren 2 Title",
+		"content": "This is screen 2 content"
+	}, {
+		"name": "Screen 3 Title",
+		"content": "This is screen 3 content"
+	}]
+
+}

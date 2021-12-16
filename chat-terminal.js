@@ -1,5 +1,10 @@
-/* CREDITS GO TO THE GUY WHO CRETED THIS THING FOR ROLL20 IN THE FIRST PLACE */
-/* This is a modified version optimized to work with the FoundyVtt system by HappySteve */
+/**
+Inspired By Roll20 Fallout Terminal by Cazra
+https://github.com/Cazra/roll20-api-scripts
+
+This is a modified version optimized to work with the FoundyVtt system by HappySteve
+*/
+
 
 class ChatTerminal {
 
@@ -33,15 +38,15 @@ class ChatTerminal {
         this.nextItemId = 0;
         this.history = [];
         this.curScreenId;
+        this.latestMsgId;
     }
 
-    // HAVNDLE SOCKET CALLS
+    /** 
+    HANDLE SOCKET CALLS
+    */
     handleTryPassword(data) {
-        console.warn(data)
         const args = data.content.split(' ');
         const password = args.slice(1).join(' ');
-        //this._guessPassword(password);
-
         if (password === this.curTerminal._password)
             this.curTerminal._locked = false;
         else
@@ -51,6 +56,7 @@ class ChatTerminal {
     }
 
     handleShowScreen(data) {
+        this.history.push(this.curScreenId);
         this._displayScreen(data.id);
     }
 
@@ -90,7 +96,6 @@ class ChatTerminal {
         var _json = JSON.parse(text);
         return _json;
     }
-
 
     /**
      * Initializes the internal JSON for the terminal.
@@ -153,7 +158,6 @@ class ChatTerminal {
      */
     _displayScreen(id) {
         const screen = this.curTerminal[id];
-        this.history.push(this.curScreenId);
         this.curScreenId = id;
 
         var html = '<table style="background-color: ' + this._getBgColor() + '; border: solid 1px ' + this._getBgColor() + '; border-collapse: separate; border-radius: 10px; font-family: monospace; overflow: hidden; width: 100%;">';
@@ -185,7 +189,6 @@ class ChatTerminal {
      */
     _displayScreenButton(cmd, label, id) {
         return '<button style="background: ' + this._getBgColor() + '; color: ' + this._getTextColor() + '; border: none; margin-bottom:0.2em;" class="terminal-chat-button" data-label="' + label + '" data-screenid="' + id + '">' + label + '</button>'
-        // return '<a href="' + cmd + '" style="background: ' + this._getButtonColor() + '; border: none; color: ' + this._getTextColor() + '; margin: 0.2em 0; width: 95%;">' + label + '</a>';
     }
     _displayBackButton() {
         return '<button class="terminal-back-button" style="background: ' + this._getBgColor() + '; color: ' + this._getTextColor() + '; border: none; margin-bottom:0.2em;">BACK</button>';
@@ -199,8 +202,6 @@ class ChatTerminal {
         var prevScreenId = this.history[this.history.length - 1];
 
         var html = '<div style="padding-top: 1em;" class="flexcol">';
-        // html += '<p>SHOW_SCREEN_CMD'  + screen.name+'</p>';
-        // html += '</div>';
         if (screen) {
             for (var i = 0; i < screen.screenIds.length; i++) {
                 var id = screen.screenIds[i];
@@ -246,7 +247,7 @@ class ChatTerminal {
 
     _displayScreenHacking() {
         var attempts = this.curTerminal._attempts;
-        //if(!attempts)
+
         if (attempts < 1) {
             return 'TERMINAL LOCKED\n\nPLEASE CONTACT AN ADMINISTRATOR';
         }
@@ -274,16 +275,16 @@ class ChatTerminal {
         }
     }
     /**
-     * Guesses the password for the terminal.
+     * Guesses the password for the terminal. Moved to socket handler
      * @param  {string} password
      */
-    _guessPassword(password) {
-        if (password === this.curTerminal._password)
-            this.curTerminal._locked = false;
-        else
-            this.curTerminal._attempts--;
-        this._displayScreen(this.curTerminal._startId);
-    }
+    // _guessPassword(password) {
+    //     if (password === this.curTerminal._password)
+    //         this.curTerminal._locked = false;
+    //     else
+    //         this.curTerminal._attempts--;
+    //     this._displayScreen(this.curTerminal._startId);
+    // }
 
     /**
      * Replaces \n's with <br/>'s.
@@ -295,23 +296,17 @@ class ChatTerminal {
     }
 
     async _sendChat(name, content) {
-
-        await ChatMessage.create({ content: content });
-        // Hooks.once('renderChatMessage', (message, html, data) => {
-        //   this._checkChatMessage(message.data, html,data);
-        // });
-
+        await ChatMessage.create({ content: content, flags: { terminalMsg: true } });
     }
 
+    /**
+     * Handle button clicks
+     * @param {html} $el
+     */
     _onTerminalButtonScreen($el) {
-        //$($el.data._html).find(".terminal-chat-button").off();
-        // $($el.data._html).find(".terminal-back-button").off();
         const id = $el.currentTarget.dataset.screenid;
-        //this.history.push(this.curScreenId);
-        //this._displayScreen(id);
         if (game.user.isGM) {
             this.handleShowScreen({ id: id });
-
         } else {
             game.socket.emit(ChatTerminal.MODULE_NAME, {
                 operation: ChatTerminal.SHOW_SCREN,
@@ -320,12 +315,8 @@ class ChatTerminal {
         }
     }
     _onTerminalButtonBack($el) {
-        //$($el.data._html).find(".terminal-chat-button").off();
-        //$($el.data._html).find(".terminal-back-button").off();
-
         if (game.user.isGM) {
             this.handleGoBack();
-            //this._displayScreen(id);
         } else {
             game.socket.emit(ChatTerminal.MODULE_NAME, {
                 operation: ChatTerminal.BACK,
@@ -333,7 +324,26 @@ class ChatTerminal {
         }
     }
 
-    _checkChatMessage(msg, html, data) {
+    /**
+     * Do this on Render Chat Message
+     * see if it is a terminal message, delete old one and assign button clicks
+     * commented are roll20 left overs of commnads.I'll need to implement those
+     * @param {schat message} msg 
+     * @param {html} html 
+     * @param {full msg data} data 
+     * @returns 
+     */
+    async _checkChatMessage(msg, html, data) {
+        if (!data.message.flags.terminalMsg)
+            return;
+
+        if (game.user.isGM) {
+            let oldMsg = await game.messages.get(this.latestMsgId);
+            if (oldMsg) {
+                await oldMsg.delete()
+            }
+        }
+        this.latestMsgId = data.message._id;
         $(html).find(".terminal-chat-button").click({ _html: html }, this._onTerminalButtonScreen.bind(this));
         $(html).find(".terminal-back-button").click({ _html: html }, this._onTerminalButtonBack.bind(this));
         //try {
@@ -359,7 +369,6 @@ class ChatTerminal {
         // catch(err) {
         //   console.log('FALLOT TERMINAL ERROR: ' + err.message);
         // }
-
     }
 
     // HELPERS
@@ -372,19 +381,19 @@ class ChatTerminal {
     _getBgColor() {
         return ChatTerminal.DEFAULT_BG_COLOR;
     }
-
-
 }
 
+
+/**
+ * HOOKS
+ */
 Hooks.once("ready", () => {
-    console.warn('INIT TERMINAL')
+    console.log('INIT CHAT TERMINAL')
     if (ChatTerminal._instance) return;
     const falloutTerminal = new ChatTerminal();
     game.falloutTerminal = falloutTerminal;
     if (game.user.isGM) {
-        console.warn('ADD SOCKET LISTENERS FOR GM')
         game.socket.on(`module.chat-terminal`, (data) => {
-            console.warn(data)
             if (data.operation === ChatTerminal.TRY_PASSWORD) ChatTerminal._instance.handleTryPassword(data);
             if (data.operation === ChatTerminal.SHOW_SCREN) ChatTerminal._instance.handleShowScreen(data);
             if (data.operation === ChatTerminal.BACK) ChatTerminal._instance.handleGoBack(data);
@@ -392,13 +401,14 @@ Hooks.once("ready", () => {
     }
 
     Hooks.on('renderChatMessage', (message, html, data) => {
-        falloutTerminal._checkChatMessage(message.data, html, data);
+        if (message.data.flags.terminalMsg) {
+            falloutTerminal._checkChatMessage(message.data, html, data);
+        }
     });
 
     // CHECK PASSWORD IN PRE CREATE
     // Send through the socket if user is player.
     Hooks.on('preCreateChatMessage', (msg, content) => {
-        console.warn(msg.data.content.indexOf(ChatTerminal.PASSWORD_CMD) === 0)
         if (msg.data.content.indexOf(ChatTerminal.PASSWORD_CMD) === 0) {
             const _data = {
                 operation: ChatTerminal.TRY_PASSWORD,
