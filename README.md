@@ -10,6 +10,6 @@ Simple example of JSON with the password (password = fo): https://raw.githubuser
 
 Complicated example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/master/FalloutTerminal/example.json 
 
-GM should create a **script** macro:
+GM should create a **script** macro that activates the terminal with a specific journal entry:
 ``` game.falloutTerminal.activateTerminal('Journal Name here') ```
 
