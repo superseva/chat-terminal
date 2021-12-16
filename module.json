@@ -1,6 +1,6 @@
 {
    "name": "chat-terminal",
-   "title": "Fallout Style Chat Terminal",
+   "title": "Chat Terminal - Fallout Style",
    "description": "Simulating fallout termnals by using JSON files to store the terminal data. Inspired by the Roll20 Terminal script.",
    "author": "HappySteve",
    "version": "0.0.1",
@@ -9,7 +9,7 @@
    "styles" : [],
    "scripts" : ["chat-terminal.js"],
    "socket": true,
-    "url": "https://github.com/superseva/fallout-terminal-fvtt",
-    "manifest": "https://raw.githubusercontent.com/superseva/fallout-terminal-fvtt/master/module.json",
-    "download": "https://github.com/superseva/fallout-terminal-fvtt/archive/master.zip"
+    "url": "https://github.com/superseva/chat-terminal",
+    "manifest": "https://raw.githubusercontent.com/superseva/chat-terminal/master/module.json",
+    "download": "https://github.com/superseva/chat-terminal/archive/refs/heads/master.zip"
  }
