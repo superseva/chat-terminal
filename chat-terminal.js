@@ -390,8 +390,8 @@ class ChatTerminal {
 Hooks.once("ready", () => {
     console.log('INIT CHAT TERMINAL')
     if (ChatTerminal._instance) return;
-    const falloutTerminal = new ChatTerminal();
-    game.falloutTerminal = falloutTerminal;
+    const chatTerminal = new ChatTerminal();
+    game.chatTerminal = chatTerminal;
     if (game.user.isGM) {
         game.socket.on(`module.chat-terminal`, (data) => {
             if (data.operation === ChatTerminal.TRY_PASSWORD) ChatTerminal._instance.handleTryPassword(data);
@@ -402,7 +402,7 @@ Hooks.once("ready", () => {
 
     Hooks.on('renderChatMessage', (message, html, data) => {
         if (message.data.flags.terminalMsg) {
-            falloutTerminal._checkChatMessage(message.data, html, data);
+            chatTerminal._checkChatMessage(message.data, html, data);
         }
     });
 
