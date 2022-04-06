@@ -17,4 +17,9 @@ If the terminal is password protected players need to type "!pass exact-password
 
 ![Terminal Started](https://github.com/superseva/chat-terminal/blob/db31d8214c63153a293096b81db2dc4ced62d1c4/Foundry_Virtual_Tabletop_DkaNcDgmar.png)
 
+![Enter password](https://github.com/superseva/chat-terminal/blob/7ce80a2901ee439b9b8cfd3cd7dc194364ad3bb2/Foundry_Virtual_Tabletop_u4yKUq35t6.png)
+
+![Home Screen](https://github.com/superseva/chat-terminal/blob/7ce80a2901ee439b9b8cfd3cd7dc194364ad3bb2/Foundry_Virtual_Tabletop_YImk0kVhPw.png)
+
+![Subsection Screen](https://github.com/superseva/chat-terminal/blob/7ce80a2901ee439b9b8cfd3cd7dc194364ad3bb2/Foundry_Virtual_Tabletop_afLCvqxru2.png)
 
