@@ -15,6 +15,6 @@ GM should create a **script** macro that activates the terminal with a specific 
 
 If the terminal is password protected players need to type "!pass exact-password" in the chat to unlock the terminal and continue to read the entries
 
-https://github.com/superseva/chat-terminal/blob/db31d8214c63153a293096b81db2dc4ced62d1c4/Foundry_Virtual_Tabletop_DkaNcDgmar.png
+![Terminal Started](https://github.com/superseva/chat-terminal/blob/db31d8214c63153a293096b81db2dc4ced62d1c4/Foundry_Virtual_Tabletop_DkaNcDgmar.png)
 
 
