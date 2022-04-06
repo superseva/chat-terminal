@@ -3,6 +3,8 @@
 Inspired By Roll20 Fallout Terminal by Cazra
 https://github.com/Cazra/roll20-api-scripts
 
+instal link: https://raw.githubusercontent.com/superseva/chat-terminal/master/module.json
+
 Copy JSON file content and paste it in to the HTML section of a Journal
 (the <> button in the Journal edit toolbar)
 
