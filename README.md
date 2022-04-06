@@ -3,7 +3,7 @@
 Inspired By Roll20 Fallout Terminal by Cazra
 https://github.com/Cazra/roll20-api-scripts
 
-## instal link: 
+## Install link: 
 
 https://raw.githubusercontent.com/superseva/chat-terminal/master/module.json
 
