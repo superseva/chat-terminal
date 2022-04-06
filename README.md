@@ -13,3 +13,6 @@ Complicated example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts
 GM should create a **script** macro that activates the terminal with a specific journal entry:
 ``` game.chatTerminal.activateTerminal('Journal Name here') ```
 
+If the terminal is password protected players need to type "!pass exact-password" in the chat to unlock the terminal and continue to read the entries
+
+
