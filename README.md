@@ -28,3 +28,7 @@ If the terminal is password protected players need to type "!pass exact-password
 ![Subsection Screen](https://github.com/superseva/chat-terminal/blob/7ce80a2901ee439b9b8cfd3cd7dc194364ad3bb2/Foundry_Virtual_Tabletop_afLCvqxru2.png)
 
 
+* Bullet list
+              * Nested bullet
+                  * Sub-nested bullet etc
+          * Bullet list item 2
