@@ -29,6 +29,4 @@ If the terminal is password protected players need to type "!pass exact-password
 
 ![Subsection Screen](https://github.com/superseva/chat-terminal/blob/7ce80a2901ee439b9b8cfd3cd7dc194364ad3bb2/Foundry_Virtual_Tabletop_afLCvqxru2.png)
 
-1. Actual numbers don't matter, just that it's a number
-⋅⋅1. Ordered sub-list
 
