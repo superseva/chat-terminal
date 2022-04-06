@@ -29,6 +29,6 @@ If the terminal is password protected players need to type "!pass exact-password
 
 
 * Bullet list
-              * Nested bullet
-                  * Sub-nested bullet etc
-          * Bullet list item 2
+* * Nested bullet
+* Sub-nested bullet etc
+* Bullet list item 2
