@@ -22,9 +22,11 @@ After that everything is displayed in the chat messages.
 ### A simple example and the terminal is protected by a password. Type "!pass fo" in the chat once you triggered the Terminal Macro and you see the welcome screen in chat.
 Simple example of JSON with the password (password = fo): https://raw.githubusercontent.com/superseva/chat-terminal/master/example.json
 
-### this is a longer entry [not password protected]
+### This is a longer entry [not password protected]
 Longer example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/master/FalloutTerminal/example.json 
 
+
+### Json Terminal Screens with password fo
 ```
 {
 	"name": "Test Terminal",
