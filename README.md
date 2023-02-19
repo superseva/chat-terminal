@@ -45,7 +45,7 @@ Longer example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/mast
 }
 ```
 
-### You can set the passwords and how many attempts are to unlock in json's root
+### You can set the passwords and how many unlock attempts there are in the json's root
 ```
 "password": "somepass",
 "attempts": 3,
