@@ -50,4 +50,4 @@ Longer example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/mast
 "attempts": 3,
 ```
 
-[home screen]('https://github.com/superseva/chat-terminal/find/master')
+![home screen]('https://github.com/superseva/chat-terminal/find/master')
