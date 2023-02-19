@@ -49,3 +49,5 @@ Longer example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/mast
 "password": "somepass",
 "attempts": 3,
 ```
+
+[home screen]('https://github.com/superseva/chat-terminal/find/master')
