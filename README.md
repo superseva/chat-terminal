@@ -14,7 +14,7 @@ Use the links bellow to copy the example JSON file content and paste it in to yo
 ## Terminal Macro
 GM should create a **script** macro that activates the terminal with a specific journal entry:
 ``` game.chatTerminal.activateTerminal('Journal Name', 'Page Name') ```
-After that everything is in displayed in the chat messages.
+After that everything is displayed in the chat messages.
 
 
 ## Terminal Content Examples : 
