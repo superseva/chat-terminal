@@ -19,8 +19,9 @@ After that everything is displayed in the chat messages.
 
 ## Terminal Content Examples : 
 
-### A simple example and the terminal is protected by a password. Type "!pass fo" in the chat once you triggered the Terminal Macro and you see the welcome screen in chat.
-Simple example of JSON with the password (password = fo): https://raw.githubusercontent.com/superseva/chat-terminal/master/example.json
+### A simple example
+The terminal is protected by a password. Type "!pass fo" in the chat once you triggered the Terminal Macro and you see the welcome screen in chat.
+https://raw.githubusercontent.com/superseva/chat-terminal/master/example.json
 
 ### This is a longer entry [not password protected]
 Longer example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/master/FalloutTerminal/example.json 
