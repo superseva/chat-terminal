@@ -1,11 +1,14 @@
 {
-   "name": "chat-terminal",
+   "id": "chat-terminal",
    "title": "Chat Terminal - Fallout Style",
    "description": "Simulating fallout termnals by using JSON files to store the terminal data. Inspired by the Roll20 Terminal script.",
-   "author": "HappySteve",
-   "version": "0.0.1",
-   "minimumCoreVersion": "0.6.0",
-   "compatibleCoreVersion":"0.8.9",
+   "authors":[{"name":"HappySteve", "discord": "shteff#8724"}],
+   "version": "1.0.0",
+   "compatibility": {
+		"minimum": "10",
+		"verified": "10",
+		"maximum": "11"
+	},
    "styles" : [],
    "scripts" : ["chat-terminal.js"],
    "socket": true,
