@@ -20,7 +20,6 @@ Simple example of JSON with the password (password = fo): https://raw.githubuser
 ### this is a longer entry [not password protected]
 Longer example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/master/FalloutTerminal/example.json 
 
-
 ```
 {
 	"name": "Test Terminal",
