@@ -51,4 +51,5 @@ Longer example: https://raw.githubusercontent.com/Roll20/roll20-api-scripts/mast
 ```
 ![home screen](https://github.com/superseva/chat-terminal/blob/61029a89f5cf11d08626e425cf617b0f2495edbe/Foundry_Virtual_Tabletop_DkaNcDgmar.png)
 ![screen 1](https://github.com/superseva/chat-terminal/blob/b3d8fea1c951f39e345912179f0440895cfa2f91/Foundry_Virtual_Tabletop_YImk0kVhPw.png)
+![screen 1 . 1](https://github.com/superseva/chat-terminal/blob/37eac60aaa4ee0e56156d2540126fe706afa0fab/Foundry_Virtual_Tabletop_afLCvqxru2.png)
 ![password example](https://github.com/superseva/chat-terminal/blob/b3d8fea1c951f39e345912179f0440895cfa2f91/Foundry_Virtual_Tabletop_u4yKUq35t6.png)
