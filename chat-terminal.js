@@ -71,13 +71,13 @@ class ChatTerminal {
    * @private
    * @param  {string} id
    */
-    activateTerminal(_journalName) {
+    activateTerminal(_journalName, _pageName) {
         this.curTerminal = {};
         this.nextItemId = 0;
         this.history = [];
         this.curScreenId;
 
-        var json = this._getTerminalJson(_journalName);
+        var json = this._getTerminalJson(_journalName, _pageName);
         if (json) {
             this._initTerminal(json);
             this._displayScreen(this.curTerminal._startId);
@@ -89,10 +89,11 @@ class ChatTerminal {
   * @private
   * @param  {string} _journalName
   */
-    _getTerminalJson(_journalName) {
+    _getTerminalJson(_journalName, _pageName) {
         //get the journal and the content
         var journal = game.journal.getName(_journalName);
-        var text = $(journal.data.content).text();
+        const _page = journal.pages.find(p=>p.name==_pageName)        
+        var text = $(_page.text.content).text();
         var _json = JSON.parse(text);
         return _json;
     }
@@ -401,19 +402,19 @@ Hooks.once("ready", () => {
     }
 
     Hooks.on('renderChatMessage', (message, html, data) => {
-        if (message.data.flags.terminalMsg) {
-            chatTerminal._checkChatMessage(message.data, html, data);
+        if (message.flags.terminalMsg) {
+            chatTerminal._checkChatMessage(message, html, data);
         }
     });
 
     // CHECK PASSWORD IN PRE CREATE
     // Send through the socket if user is player.
     Hooks.on('preCreateChatMessage', (msg, content) => {
-        if (msg.data.content.indexOf(ChatTerminal.PASSWORD_CMD) === 0) {
+        if (msg.content.indexOf(ChatTerminal.PASSWORD_CMD) === 0) {
             const _data = {
                 operation: ChatTerminal.TRY_PASSWORD,
                 user: game.user.id,
-                content: msg.data.content
+                content: msg.content
             }
             if (!game.user.isGM) {
                 game.socket.emit(ChatTerminal.MODULE_NAME, _data);
